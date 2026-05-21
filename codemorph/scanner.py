@@ -257,13 +257,14 @@ class CodebaseScanner:
             stem = rel.stem
             module_map[stem] = rel
 
-        graph: Dict[Path, Set[Path]] = {}
+        # graph[dep] = set of files that depend on it
+        # This way in-degree counts how many files need a module done first.
+        graph: Dict[Path, Set[Path]] = {f: set() for f in profile.files}
         for rel, info in profile.files.items():
-            deps: Set[Path] = set()
             for imp in info.imports:
                 if imp in module_map and module_map[imp] != rel:
-                    deps.add(module_map[imp])
-            graph[rel] = deps
+                    dep = module_map[imp]
+                    graph.setdefault(dep, set()).add(rel)
         return graph
 
     def _find_entry_points(self, profile: ProjectProfile) -> List[Path]:
