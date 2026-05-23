@@ -310,3 +310,8 @@ app.listen(3000, () => console.log("Server running on port 3000"));
 ## License
 
 MIT License. See [LICENSE](LICENSE) for details.
+
+
+## Changelog
+
+- v0.1.0 — Initial release
